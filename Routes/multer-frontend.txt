@@ -1,0 +1,20 @@
+Front end
+
+const post = async (e) =>{
+    if( title !== '' ){
+      const fileName = Date.now() + file.name ; 
+      const formData = new FormData() 
+      formData.append('name', fileName);
+      formData.append('file', file)
+      formData.append("userId" , userId)
+      formData.append("title" , title)
+      formData.append("desc" , desc)
+
+      const res = await axios.post('http://localhost:4000/main', formData );
+      
+      if(res.data === 'Posted'){
+        window.location.reload();
+      }
+      
+    }
+  }

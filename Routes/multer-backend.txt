@@ -1,0 +1,40 @@
+backend
+
+const multer = require('multer');
+
+//------------Setting up multer ( da storage alocate kolo da para ) ---------------
+
+const storage = multer.diskStorage({
+    destination: (req,file,cb) => {
+        cb(null, "./images");   //( di ki images yao folder day pa backend file ki , singa chi routes ya modules wi )
+    },
+    filename: (req,file,cb) => {
+        cb(null,req.body.name);
+    },
+});
+
+const upload = multer({ storage : storage});
+
+//------------------------Post-------------------------
+
+app.post('/', upload.single('file'), async (req,res) => { 
+
+	//pa di ki upload.single da signle file upload kolo da para wi ao multiple wala zama pa khiyal sirf uplooad.multiple istimaligi kho ma try keray ne day
+    	//upload.single("file") ki chi km "file" day , nu agha num aw frontend ki chi km num day agha ba same sati yani k "file"
+     try {
+        const post = new Post({
+        userId : req.body.userId,
+        title: req.body.title,
+        desc: req.body.desc,
+        img : req.body.name //(backend ki ba sirf filename save kigi , aw file name ba front end na set k current date sara )
+        });
+
+        post.save();
+        res.status(200).json("Posted");
+
+    }catch(err){
+        res.status(500).json(err);
+    }
+})
+
+
